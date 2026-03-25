@@ -54,3 +54,4 @@ Proyecto desarrollado en la Universidad del Cauca, curso Ingeniería de Software
 - Jors Eduar Solarte
 - Julian David Narváez
 - Dario Alexander Cárdenas
+- Carlos Martinez
