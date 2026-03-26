@@ -67,7 +67,7 @@ public class UsuarioService {
         String genero,
         LocalDate fechaNac,
         String telefono,
-        int dni
+        String dni
     ) {
 
         // Validaciones

@@ -284,7 +284,7 @@ public class RegistroFrame extends JFrame {
         LocalDate fechaNac = ((java.util.Date) spinFechaNac.getValue()).toInstant()
                 .atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         String telefono = txtTelefono.getText().trim();
-        int dni = Integer.parseInt(dniText);
+        String dni = dniText;
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword());
         String rol = (String) cmbRol.getSelectedItem();

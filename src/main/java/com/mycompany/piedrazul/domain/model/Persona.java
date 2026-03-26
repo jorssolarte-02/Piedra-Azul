@@ -18,14 +18,14 @@ public class Persona {
     private String genero;
     private LocalDate fechaNacimiento;
     private String telefono;
-    private int dni;
+    private String dni;
 
     public Persona() {}
 
     public Persona(String primerNombre, String segundoNombre,
                    String primerApellido, String segundoApellido,
                    String genero, LocalDate fechaNacimiento,
-                   String telefono, int dni) {
+                   String telefono, String dni) {
         this.primerNombre = primerNombre;
         this.segundoNombre = segundoNombre;
         this.primerApellido = primerApellido;
@@ -100,11 +100,11 @@ public class Persona {
         this.telefono = telefono;
     }
 
-    public int getDni() {
+    public String getDni() {
         return dni;
     }
 
-    public void setDni(int dni) {
+    public void setDni(String dni) {
         this.dni = dni;
     }
     

@@ -32,7 +32,7 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
             stmt.setString(5, persona.getGenero());
             stmt.setDate(6, Date.valueOf(persona.getFechaNacimiento()));
             stmt.setString(7, persona.getTelefono());
-            stmt.setInt(8, persona.getDni());
+            stmt.setString(8, persona.getDni());
 
             stmt.executeUpdate();
 
@@ -65,7 +65,7 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
                 p.setPrimerApellido(rs.getString("per_primer_apellido"));
                 p.setGenero(rs.getString("per_genero"));
                 p.setTelefono(rs.getString("per_telefono"));
-                p.setDni(rs.getInt("per_dni"));
+                p.setDni(rs.getString("per_dni"));
                 // completar los demás
                 return p;
             }
@@ -78,13 +78,13 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
     }
 
     @Override
-    public boolean dniExists(int dni) {
+    public boolean dniExists(String dni) {
         String sql = "SELECT COUNT(*) FROM persona WHERE per_dni = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, dni);
+            stmt.setString(1, dni);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
