@@ -5,12 +5,13 @@ import com.mycompany.piedrazul.domain.service.UsuarioService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.time.LocalDate;
 
 public class RegistroFrame extends JFrame {
 
-    private UsuarioService usuarioService;
+    private final UsuarioService usuarioService;
 
     private JTextField txtPrimerNombre, txtSegundoNombre;
     private JTextField txtPrimerApellido, txtSegundoApellido;
@@ -26,7 +27,6 @@ public class RegistroFrame extends JFrame {
     }
 
     private void initComponents() {
-
         setTitle("Registro - Piedra Azul");
         setSize(700, 650);
         setLocationRelativeTo(null);
@@ -43,7 +43,6 @@ public class RegistroFrame extends JFrame {
         title.setForeground(Color.WHITE);
         title.setFont(new Font("Segoe UI", Font.BOLD, 16));
         title.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
-
         header.add(title, BorderLayout.WEST);
 
         JPanel center = new JPanel(new GridBagLayout());
@@ -69,24 +68,23 @@ public class RegistroFrame extends JFrame {
 
         txtPrimerNombre = crearCampo("tu primer nombre");
         txtSegundoNombre = crearCampo("tu segundo nombre");
-
         txtPrimerApellido = crearCampo("tu primer apellido");
         txtSegundoApellido = crearCampo("tu segundo apellido");
-
         txtTelefono = crearCampo("tu teléfono");
         txtDni = crearCampo("tu documento");
         txtUsername = crearCampo("tu usuario");
 
         JPanel passPanel = new JPanel(new BorderLayout());
         passPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        passPanel.setBackground(Color.WHITE);
 
         txtPassword = new JPasswordField("tu contraseña");
         txtPassword.setForeground(Color.GRAY);
-        txtPassword.setBackground(new Color(235,235,235));
-        txtPassword.setEchoChar((char) 0); // 👈 importante
+        txtPassword.setBackground(new Color(235, 235, 235));
+        txtPassword.setEchoChar((char) 0);
 
-        // 🔥 Placeholder contraseña
         txtPassword.addFocusListener(new FocusAdapter() {
+            @Override
             public void focusGained(FocusEvent e) {
                 if (String.valueOf(txtPassword.getPassword()).equals("tu contraseña")) {
                     txtPassword.setText("");
@@ -95,6 +93,7 @@ public class RegistroFrame extends JFrame {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
                 if (String.valueOf(txtPassword.getPassword()).isEmpty()) {
                     txtPassword.setText("tu contraseña");
@@ -107,14 +106,18 @@ public class RegistroFrame extends JFrame {
         JButton btnVer = new JButton("👁");
         btnVer.addActionListener(e -> {
             passwordVisible = !passwordVisible;
-            txtPassword.setEchoChar(passwordVisible ? (char) 0 : '•');
+            if (String.valueOf(txtPassword.getPassword()).equals("tu contraseña")) {
+                txtPassword.setEchoChar((char) 0);
+            } else {
+                txtPassword.setEchoChar(passwordVisible ? (char) 0 : '•');
+            }
         });
 
         passPanel.add(txtPassword, BorderLayout.CENTER);
         passPanel.add(btnVer, BorderLayout.EAST);
 
-        cmbGenero = new JComboBox<>(new String[]{"HOMBRE", "MUJER"});
-        cmbRol = new JComboBox<>(new String[]{"PACIENTE", "MEDICO_TERAPISTA", "AGENDADOR", "ADMINISTRADOR"});
+        cmbGenero = new JComboBox<>(new String[]{"HOMBRE", "MUJER", "OTRO"});
+        cmbRol = new JComboBox<>(new String[]{"ADMINISTRADOR", "AGENDADOR", "MEDICO_TERAPISTA"});
 
         formPanel.add(lblTitulo);
         formPanel.add(Box.createVerticalStrut(5));
@@ -157,7 +160,7 @@ public class RegistroFrame extends JFrame {
         JButton btnGuardar = new JButton("Registrarse");
         JButton btnCancelar = new JButton("Cancelar");
 
-        btnGuardar.setBackground(new Color(0,150,136));
+        btnGuardar.setBackground(new Color(0, 150, 136));
         btnGuardar.setForeground(Color.WHITE);
 
         JPanel bottom = new JPanel();
@@ -174,25 +177,24 @@ public class RegistroFrame extends JFrame {
 
         add(main);
 
-        btnGuardar.addActionListener(e -> registrar());
+        btnGuardar.addActionListener(e -> registrarUsuario());
         btnCancelar.addActionListener(e -> dispose());
     }
 
     private void mostrarErrorDialog(String mensaje) {
-
         JDialog dialog = new JDialog(this, "Error", true);
         dialog.setSize(350, 160);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel icon = new JLabel("X", SwingConstants.CENTER);
         icon.setForeground(Color.WHITE);
         icon.setOpaque(true);
         icon.setBackground(Color.RED);
-        icon.setPreferredSize(new Dimension(40,40));
+        icon.setPreferredSize(new Dimension(40, 40));
         icon.setFont(new Font("Segoe UI", Font.BOLD, 20));
 
         JLabel text = new JLabel("<html>" + mensaje + "</html>");
@@ -215,74 +217,93 @@ public class RegistroFrame extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void registrar() {
+    private void registrarUsuario() {
+        String username = txtUsername.getText().trim();
+        String password = new String(txtPassword.getPassword()).trim();
+        String primerNombre = txtPrimerNombre.getText().trim();
+        String segundoNombre = txtSegundoNombre.getText().trim();
+        String primerApellido = txtPrimerApellido.getText().trim();
+        String segundoApellido = txtSegundoApellido.getText().trim();
+        String telefono = txtTelefono.getText().trim();
+        String dni = txtDni.getText().trim();
 
-    // 🔹 Limpiar datos (MUY IMPORTANTE)
-    String username = txtUsername.getText().trim();
-    String password = new String(txtPassword.getPassword()).trim();
-    String primerNombre = txtPrimerNombre.getText().trim();
-    String segundoNombre = txtSegundoNombre.getText().trim();
-    String primerApellido = txtPrimerApellido.getText().trim();
-    String segundoApellido = txtSegundoApellido.getText().trim();
-    String telefono = txtTelefono.getText().trim();
-    String dniText = txtDni.getText().trim();
+        if (primerNombre.isEmpty() || primerNombre.equals("tu primer nombre") ||
+            primerApellido.isEmpty() || primerApellido.equals("tu primer apellido") ||
+            telefono.isEmpty() || telefono.equals("tu teléfono") ||
+            dni.isEmpty() || dni.equals("tu documento") ||
+            username.isEmpty() || username.equals("tu usuario") ||
+            password.isEmpty() || password.equals("tu contraseña") || password.length() < 6) {
 
-    // 🔹 Validación correcta (evita placeholders y vacíos)
-    if (primerNombre.isEmpty() || primerNombre.equals("tu primer nombre") ||
-        primerApellido.isEmpty() || primerApellido.equals("tu primer apellido") ||
-        telefono.isEmpty() || telefono.equals("tu teléfono") ||
-        dniText.isEmpty() || dniText.equals("tu documento") ||
-        username.isEmpty() || username.equals("tu usuario") ||
-        password.isEmpty() || password.equals("tu contraseña") || password.length() < 6) {
+            mostrarErrorDialog("Todos los campos obligatorios deben estar completos y la contraseña debe tener al menos 6 caracteres.");
+            return;
+        }
 
-        mostrarErrorDialog("Todos los campos son obligatorios");
-        return;
-    }
+        if (!dni.matches("\\d+")) {
+            mostrarErrorDialog("El DNI debe contener solo números.");
+            return;
+        }
 
-    try {
-        int dni = Integer.parseInt(dniText);
+        if (dni.length() < 6 || dni.length() > 15) {
+            mostrarErrorDialog("El DNI debe tener entre 6 y 15 dígitos.");
+            return;
+        }
 
-        usuarioService.registrarUsuario(
-                username,
-                password,
-                Rol.valueOf((String) cmbRol.getSelectedItem()),
-                primerNombre,
-                segundoNombre,
-                primerApellido,
-                segundoApellido,
-                (String) cmbGenero.getSelectedItem(),
-                LocalDate.now(),
-                telefono,
-                dni
-        );
+        try {
+            boolean creado = usuarioService.registrarUsuario(
+                    username,
+                    password,
+                    mapearRol((String) cmbRol.getSelectedItem()),
+                    primerNombre,
+                    segundoNombre,
+                    primerApellido,
+                    segundoApellido,
+                    (String) cmbGenero.getSelectedItem(),
+                    LocalDate.now(),
+                    telefono,
+                    dni
+            );
 
-        JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
-        dispose();
+            if (creado) {
+                JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
+                dispose();
+            } else {
+                mostrarErrorDialog("No se pudo registrar el usuario.");
+            }
 
-    } catch (NumberFormatException e) {
-        mostrarErrorDialog("El DNI debe ser numérico");
+        } catch (Exception e) {
+            String msg = e.getMessage() == null ? "" : e.getMessage().toLowerCase();
 
-    } catch (Exception e) {
-
-        String msg = e.getMessage().toLowerCase();
-
-        if (msg.contains("existe")) {
-            mostrarErrorDialog("El usuario ya existe");
-        } else if (msg.contains("intentos") || msg.contains("bloqueado")) {
-            mostrarErrorDialog("Has realizado varios intentos de registro en poco tiempo.<br>Por seguridad, el registro está bloqueado durante 15 minutos.");
-        } else {
-            mostrarErrorDialog(e.getMessage());
+            if (msg.contains("existe")) {
+                mostrarErrorDialog("El usuario o el DNI ya existen.");
+            } else if (msg.contains("intentos") || msg.contains("bloqueado")) {
+                mostrarErrorDialog("Has realizado varios intentos de registro en poco tiempo.<br>Por seguridad, el registro está bloqueado durante 15 minutos.");
+            } else {
+                mostrarErrorDialog(e.getMessage());
+            }
         }
     }
-}
+
+    private Rol mapearRol(String rolUI) {
+        switch (rolUI) {
+            case "ADMINISTRADOR":
+                return Rol.ADMINISTRADOR;
+            case "AGENDADOR":
+                return Rol.AGENDADOR;
+            case "MEDICO_TERAPISTA":
+                return Rol.MEDICO_TERAPISTA;
+            default:
+                throw new IllegalArgumentException("Rol inválido");
+        }
+    }
 
     private JTextField crearCampo(String placeholder) {
         JTextField campo = new JTextField(placeholder);
         campo.setForeground(Color.GRAY);
         campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
-        campo.setBackground(new Color(235,235,235));
+        campo.setBackground(new Color(235, 235, 235));
 
         campo.addFocusListener(new FocusAdapter() {
+            @Override
             public void focusGained(FocusEvent e) {
                 if (campo.getText().equals(placeholder)) {
                     campo.setText("");
@@ -290,6 +311,7 @@ public class RegistroFrame extends JFrame {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
                 if (campo.getText().isEmpty()) {
                     campo.setText(placeholder);
