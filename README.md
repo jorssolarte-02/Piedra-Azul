@@ -33,7 +33,7 @@ Organización por capas
 - Lenguaje: Java
 - Interfaz gráfica: Swing / JavaFX
 - Base de datos: PostgreSQL
-- Control de versiones: Git + GitHub
+- Control de versiones: Git  +  GitHub
 
 ⚙️ Ejecución del sistema
 - Clonar el repositorio:
