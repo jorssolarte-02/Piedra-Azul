@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
  *
  * @author asus
  */
+// clase login 
 public class LoginFrame extends JFrame {
 
     private UsuarioService usuarioService;
