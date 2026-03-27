@@ -5,21 +5,33 @@ import com.mycompany.piedrazul.domain.service.UsuarioService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+//import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-//clase registro
+
+/**
+ *
+ * @author asus
+ */
+
 public class RegistroFrame extends JFrame {
 
     private final UsuarioService usuarioService;
 
-    private JTextField txtPrimerNombre, txtSegundoNombre;
-    private JTextField txtPrimerApellido, txtSegundoApellido;
-    private JTextField txtTelefono, txtDni, txtUsername;
-    private JPasswordField txtPassword;
-    private JComboBox<String> cmbGenero, cmbRol;
+    // Datos Personales (Persona tabla)
+    private JTextField txtPrimerNombre;
+    private JTextField txtSegundoNombre;
+    private JTextField txtPrimerApellido;
+    private JTextField txtSegundoApellido;
+    private JComboBox<String> cmbGenero;
+    private JSpinner spinFechaNac;
+    private JTextField txtTelefono;
+    private JTextField txtDni;
+    private JTextField txtCorreo;
 
-    private boolean passwordVisible = false;
+    // Datos Usuario
+    private JTextField txtUsername;
+    private JPasswordField txtPassword;
+    private JComboBox<String> cmbRol;
 
     public RegistroFrame(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
@@ -28,274 +40,328 @@ public class RegistroFrame extends JFrame {
 
     private void initComponents() {
 
-        setTitle("Registro - Piedra Azul");
-        setSize(1000, 820);
+        setTitle("PIEDRAZUL - Registro de Usuario");
+        setSize(900, 850);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        JPanel main = new JPanel(new BorderLayout());
-        main.setBackground(new Color(240, 240, 240));
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(new Color(220, 220, 220));
 
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(new Color(0, 150, 136));
-        header.setPreferredSize(new Dimension(100, 70));
+        // ==============================
+        // Barra superior
+        // ==============================
+        JPanel topBar = new JPanel(new BorderLayout());
+        topBar.setBackground(new Color(40, 170, 200));
+        topBar.setPreferredSize(new Dimension(900, 70));
 
-        JLabel title = new JLabel("ACM – PIEDRA AZUL");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
-        title.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
-        header.add(title, BorderLayout.WEST);
+        JLabel lblTitulo = new JLabel("PIEDRAZUL");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 28));
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 10));
 
-        JPanel center = new JPanel(new GridBagLayout());
-        center.setBackground(new Color(240, 240, 240));
+        topBar.add(lblTitulo, BorderLayout.WEST);
 
-        JPanel card = new JPanel(new BorderLayout());
-        card.setPreferredSize(new Dimension(650, 700));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createEmptyBorder(35, 50, 35, 50));
+        // ==============================
+        // Panel central con scroll
+        // ==============================
+        JPanel centerPanel = new JPanel();
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(30, 80, 30, 80));
+        centerPanel.setBackground(new Color(220, 220, 220));
 
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBackground(Color.WHITE);
-
-        JLabel lblTitulo = new JLabel("Registrar Usuario");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
-        lblTitulo.setForeground(new Color(0, 150, 136));
-        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel lblSub = new JLabel("Completa los datos para crear una cuenta");
-        lblSub.setForeground(Color.GRAY);
-        lblSub.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        JLabel lblSub = new JLabel("REGISTRAR NUEVO USUARIO");
+        lblSub.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        lblSub.setForeground(new Color(70, 170, 200));
         lblSub.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        txtPrimerNombre = crearCampo("tu primer nombre");
-        txtSegundoNombre = crearCampo("tu segundo nombre");
-        txtPrimerApellido = crearCampo("tu primer apellido");
-        txtSegundoApellido = crearCampo("tu segundo apellido");
-        txtTelefono = crearCampo("tu teléfono");
-        txtDni = crearCampo("tu documento");
-        txtUsername = crearCampo("tu usuario");
+        centerPanel.add(lblSub);
+        centerPanel.add(Box.createVerticalStrut(30));
 
-        JPanel passPanel = new JPanel(new BorderLayout());
-        passPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        passPanel.setBackground(Color.WHITE);
+        // ===== SECCIÓN DATOS PERSONALES =====
+        JLabel lblSeccionPersonal = crearLabel("DATOS PERSONALES");
+        lblSeccionPersonal.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        centerPanel.add(lblSeccionPersonal);
+        centerPanel.add(Box.createVerticalStrut(15));
 
-        txtPassword = new JPasswordField("tu contraseña");
-        txtPassword.setForeground(Color.GRAY);
-        txtPassword.setBackground(new Color(235, 235, 235));
-        txtPassword.setEchoChar((char) 0);
+        // Primer nombre
+        txtPrimerNombre = crearCampoTexto();
+        centerPanel.add(crearLabel("Primer Nombre *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtPrimerNombre);
+        centerPanel.add(Box.createVerticalStrut(15));
 
-        txtPassword.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (String.valueOf(txtPassword.getPassword()).equals("tu contraseña")) {
-                    txtPassword.setText("");
-                    txtPassword.setForeground(Color.BLACK);
-                    txtPassword.setEchoChar('•');
-                }
-            }
+        // Segundo nombre
+        txtSegundoNombre = crearCampoTexto();
+        centerPanel.add(crearLabel("Segundo Nombre"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtSegundoNombre);
+        centerPanel.add(Box.createVerticalStrut(15));
 
-            public void focusLost(FocusEvent e) {
-                if (String.valueOf(txtPassword.getPassword()).isEmpty()) {
-                    txtPassword.setText("tu contraseña");
-                    txtPassword.setForeground(Color.GRAY);
-                    txtPassword.setEchoChar((char) 0);
-                }
-            }
-        });
+        // Primer apellido
+        txtPrimerApellido = crearCampoTexto();
+        centerPanel.add(crearLabel("Primer Apellido *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtPrimerApellido);
+        centerPanel.add(Box.createVerticalStrut(15));
 
-        JButton btnVer = new JButton("👁");
-        btnVer.setFocusPainted(false);
-        btnVer.setPreferredSize(new Dimension(60, 50));
+        // Segundo apellido
+        txtSegundoApellido = crearCampoTexto();
+        centerPanel.add(crearLabel("Segundo Apellido"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtSegundoApellido);
+        centerPanel.add(Box.createVerticalStrut(15));
 
-        btnVer.addActionListener(e -> {
-            passwordVisible = !passwordVisible;
-            if (!String.valueOf(txtPassword.getPassword()).equals("tu contraseña")) {
-                txtPassword.setEchoChar(passwordVisible ? (char) 0 : '•');
-            }
-        });
-
-        passPanel.add(txtPassword, BorderLayout.CENTER);
-        passPanel.add(btnVer, BorderLayout.EAST);
-
+        // Género
         cmbGenero = new JComboBox<>(new String[]{"HOMBRE", "MUJER", "OTRO"});
-        cmbRol = new JComboBox<>(new String[]{
-                "PACIENTE",
-                "AGENDADOR",
-                "MEDICO_TERAPISTA",
-                "ADMINISTRADOR"
-        });
-
         cmbGenero.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        cmbGenero.setBackground(new Color(180, 210, 220));
+        cmbGenero.setBorder(BorderFactory.createLineBorder(new Color(40, 170, 200), 2));
+        centerPanel.add(crearLabel("Género *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(cmbGenero);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // Fecha de nacimiento (Date Picker)
+        spinFechaNac = new JSpinner(new SpinnerDateModel(new java.util.Date(), null, null, java.util.Calendar.YEAR));
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(spinFechaNac, "yyyy-MM-dd");
+        spinFechaNac.setEditor(editor);
+        spinFechaNac.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        centerPanel.add(crearLabel("Fecha de Nacimiento (yyyy-MM-dd) *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(spinFechaNac);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // Teléfono
+        txtTelefono = crearCampoTexto();
+        centerPanel.add(crearLabel("Teléfono *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtTelefono);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // DNI
+        txtDni = crearCampoTexto();
+        txtDni.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        txtDni.setBackground(new Color(180, 210, 220));
+        txtDni.setBorder(BorderFactory.createLineBorder(new Color(40, 170, 200), 2));
+        centerPanel.add(crearLabel("DNI *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtDni);
+        centerPanel.add(Box.createVerticalStrut(25));
+        
+        // Teléfono
+        txtCorreo = crearCampoTexto();
+        centerPanel.add(crearLabel("Correo electrónico "));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtCorreo);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // ===== SECCIÓN DATOS DE USUARIO =====
+        JLabel lblSeccionUsuario = crearLabel("DATOS DE ACCESO");
+        lblSeccionUsuario.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        centerPanel.add(lblSeccionUsuario);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // Username
+        txtUsername = crearCampoTexto();
+        centerPanel.add(crearLabel("Nombre de Usuario *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtUsername);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // Password
+        txtPassword = new JPasswordField();
+        txtPassword.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        txtPassword.setBackground(new Color(180, 210, 220));
+        txtPassword.setBorder(BorderFactory.createLineBorder(new Color(40, 170, 200), 2));
+        centerPanel.add(crearLabel("Contraseña *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(txtPassword);
+        centerPanel.add(Box.createVerticalStrut(15));
+
+        // Rol
+        cmbRol = new JComboBox<>(new String[]{"PACIENTE", "MEDICO_TERAPISTA", "AGENDADOR", "ADMINISTRADOR"});
         cmbRol.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        cmbRol.setBackground(new Color(180, 210, 220));
+        cmbRol.setBorder(BorderFactory.createLineBorder(new Color(40, 170, 200), 2));
+        centerPanel.add(crearLabel("Rol *"));
+        centerPanel.add(Box.createVerticalStrut(3));
+        centerPanel.add(cmbRol);
+        centerPanel.add(Box.createVerticalStrut(30));
 
-        formPanel.add(lblTitulo);
-        formPanel.add(Box.createVerticalStrut(10));
-        formPanel.add(lblSub);
-        formPanel.add(Box.createVerticalStrut(30));
-
-        agregarCampo(formPanel, "Primer Nombre *", txtPrimerNombre);
-        agregarCampo(formPanel, "Segundo Nombre", txtSegundoNombre);
-        agregarCampo(formPanel, "Primer Apellido *", txtPrimerApellido);
-        agregarCampo(formPanel, "Segundo Apellido", txtSegundoApellido);
-        agregarCampo(formPanel, "Teléfono *", txtTelefono);
-        agregarCampo(formPanel, "DNI *", txtDni);
-        agregarCampo(formPanel, "Usuario *", txtUsername);
-
-        formPanel.add(crearLabel("Contraseña *"));
-        formPanel.add(passPanel);
-        formPanel.add(Box.createVerticalStrut(20));
-
-        formPanel.add(crearLabel("Género"));
-        formPanel.add(cmbGenero);
-        formPanel.add(Box.createVerticalStrut(20));
-
-        formPanel.add(crearLabel("Rol"));
-        formPanel.add(cmbRol);
-
-        JScrollPane scroll = new JScrollPane(formPanel);
-        scroll.setBorder(null);
-
-        JButton btnGuardar = new JButton("Registrarse");
-        JButton btnCancelar = new JButton("Cancelar");
-
-        btnGuardar.setBackground(new Color(0, 150, 136));
-        btnGuardar.setForeground(Color.WHITE);
-        btnGuardar.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        btnGuardar.setPreferredSize(new Dimension(180, 45));
-
-        btnCancelar.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-        btnCancelar.setPreferredSize(new Dimension(160, 45));
-
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.CENTER, 40, 15));
-        bottom.add(btnCancelar);
-        bottom.add(btnGuardar);
-
-        card.add(scroll, BorderLayout.CENTER);
-        card.add(bottom, BorderLayout.SOUTH);
-
-        center.add(card, new GridBagConstraints() {{
-            weightx = 1;
-            weighty = 1;
-            anchor = GridBagConstraints.CENTER;
-        }});
-
-        main.add(header, BorderLayout.NORTH);
-        main.add(center, BorderLayout.CENTER);
-
-        add(main);
+        // ===== Botones =====
+        JButton btnGuardar = crearBoton("Registrarse");
+        JButton btnCancelar = crearBoton("Cancelar");
 
         btnGuardar.addActionListener(e -> registrarUsuario());
         btnCancelar.addActionListener(e -> dispose());
+
+        JPanel botonesPanel = new JPanel();
+        botonesPanel.setBackground(new Color(220, 220, 220));
+        botonesPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));
+        botonesPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 40, 0));
+        botonesPanel.add(btnGuardar);
+        botonesPanel.add(btnCancelar);
+
+        centerPanel.add(botonesPanel);
+
+        // Scroll pane para el panel central
+        JScrollPane scrollPane = new JScrollPane(centerPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        mainPanel.add(topBar, BorderLayout.NORTH);
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        add(mainPanel);
     }
-
-    private void agregarCampo(JPanel panel, String label, JComponent campo) {
-        panel.add(crearLabel(label));
-        panel.add(campo);
-        panel.add(Box.createVerticalStrut(18));
-    }
-
-    private JTextField crearCampo(String placeholder) {
-        JTextField campo = new JTextField(placeholder);
-        campo.setForeground(Color.GRAY);
-        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-        campo.setBackground(new Color(235, 235, 235));
-        campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-
-        campo.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (campo.getText().equals(placeholder)) {
-                    campo.setText("");
-                    campo.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (campo.getText().isEmpty()) {
-                    campo.setText(placeholder);
-                    campo.setForeground(Color.GRAY);
-                }
-            }
-        });
-
+    
+    private JTextField crearCampoTexto() {
+        JTextField campo = new JTextField();
+        campo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 45));
+        campo.setBackground(new Color(180, 210, 220));
+        campo.setBorder(BorderFactory.createLineBorder(new Color(40,170,200), 2));
         return campo;
     }
 
-    private JLabel crearLabel(String text) {
-        JLabel lbl = new JLabel(text);
-        lbl.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        return lbl;
+    private JLabel crearLabel(String texto) {
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        label.setForeground(new Color(70, 170, 200));
+        return label;
     }
 
-    // 🔥 SOLO ESTO SE ARREGLÓ
+    private JButton crearBoton(String texto) {
+       JButton boton = new JButton(texto);
+        boton.setBackground(new Color(70, 170, 200));
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        boton.setFocusPainted(false);
+        boton.setPreferredSize(new Dimension(180, 45));
+        return boton;
+    }
+
+
+
     private void registrarUsuario() {
+        // Validar campos obligatorios
+        if (txtPrimerNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Primer nombre es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (txtPrimerApellido.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Primer apellido es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (txtTelefono.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Teléfono es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        String dniText = txtDni.getText().trim();
+        if (dniText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "DNI es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!dniText.matches("\\d+")) {
+            JOptionPane.showMessageDialog(this, "DNI debe contener solo dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (dniText.length() < 6 || dniText.length() > 15) {
+            JOptionPane.showMessageDialog(this, "DNI debe tener entre 6 y 15 dígitos", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (txtUsername.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nombre de usuario es obligatorio", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (new String(txtPassword.getPassword()).isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Contraseña es obligatoria", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-        String username = txtUsername.getText().trim();
-        String password = new String(txtPassword.getPassword()).trim();
+        // Recopilar datos
         String primerNombre = txtPrimerNombre.getText().trim();
+        String segundoNombre = txtSegundoNombre.getText().trim();
         String primerApellido = txtPrimerApellido.getText().trim();
+        String segundoApellido = txtSegundoApellido.getText().trim();
+        String genero = (String) cmbGenero.getSelectedItem();
+        LocalDate fechaNac = ((java.util.Date) spinFechaNac.getValue()).toInstant()
+                .atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         String telefono = txtTelefono.getText().trim();
-        String dni = txtDni.getText().trim();
+        String dni = dniText;
+        String correo = txtCorreo.getText().trim();
+        String username = txtUsername.getText().trim();
+        String password = new String(txtPassword.getPassword());
+        String rol = (String) cmbRol.getSelectedItem();
+        
 
-        if (primerNombre.isEmpty() || primerNombre.equals("tu primer nombre") ||
-            primerApellido.isEmpty() || primerApellido.equals("tu primer apellido") ||
-            telefono.isEmpty() || telefono.equals("tu teléfono") ||
-            dni.isEmpty() || dni.equals("tu documento") ||
-            username.isEmpty() || username.equals("tu usuario") ||
-            password.isEmpty() || password.equals("tu contraseña")) {
+        
+        StringBuilder mensaje = new StringBuilder("Datos capturados:\n\n");
+        mensaje.append("Nombre: ").append(primerNombre).append(" ").append(segundoNombre).append("\n");
+        mensaje.append("Apellido: ").append(primerApellido).append(" ").append(segundoApellido).append("\n");
+        mensaje.append("Género: ").append(genero).append("\n");
+        mensaje.append("Fecha Nac: ").append(fechaNac).append("\n");
+        mensaje.append("Teléfono: ").append(telefono).append("\n");
+        mensaje.append("DNI: ").append(dni).append("\n");
+        mensaje.append("Correo: ").append(correo).append("\n");
+        mensaje.append("Username: ").append(username).append("\n");
+        mensaje.append("Rol: ").append(rol).append("\n");
 
-            JOptionPane.showMessageDialog(this, "Completa todos los campos obligatorios");
-            return;
-        }
-
-        if (password.length() < 6) {
-            JOptionPane.showMessageDialog(this, "La contraseña debe tener al menos 6 caracteres");
-            return;
-        }
-
-        if (!dni.matches("\\d+")) {
-            JOptionPane.showMessageDialog(this, "El DNI debe contener solo números");
-            return;
-        }
-
+        //JOptionPane.showMessageDialog(this, mensaje.toString(), "Validación", JOptionPane.INFORMATION_MESSAGE);
         try {
+            //String nombreCompleto = primerNombre + " " + segundoNombre + " " + primerApellido + " " + segundoApellido;
+
             boolean creado = usuarioService.registrarUsuario(
                     username,
                     password,
-                    mapearRol((String) cmbRol.getSelectedItem()),
-                    txtPrimerNombre.getText(),
-                    txtSegundoNombre.getText(),
-                    txtPrimerApellido.getText(),
-                    txtSegundoApellido.getText(),
-                    (String) cmbGenero.getSelectedItem(),
-                    LocalDate.now(),
+                    mapearRol(rol),
+                    primerNombre,
+                    segundoNombre,
+                    primerApellido,
+                    segundoApellido,
+                    genero,
+                    fechaNac,
                     telefono,
-                    dni
+                    dni,
+                    correo
             );
 
             if (creado) {
-                JOptionPane.showMessageDialog(this, "Usuario registrado correctamente");
-                dispose();
-            }
-
-        } catch (Exception e) {
-
-            String msg = e.getMessage() == null ? "" : e.getMessage().toLowerCase();
-
-            if (msg.contains("existe")) {
-                JOptionPane.showMessageDialog(this, "El usuario o el DNI ya existen");
+                JOptionPane.showMessageDialog(this, "Usuario registrado correctamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarFormulario();
             } else {
-                JOptionPane.showMessageDialog(this, e.getMessage());
+                JOptionPane.showMessageDialog(this, "No se pudo registrar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
             }
+
+        } catch (Exception ex) {
+        JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private Rol mapearRol(String rolUI) {
         switch (rolUI) {
-            case "PACIENTE": return Rol.PACIENTE;
-            case "AGENDADOR": return Rol.AGENDADOR;
-            case "MEDICO_TERAPISTA": return Rol.MEDICO_TERAPISTA;
-            case "ADMINISTRADOR": return Rol.ADMINISTRADOR;
-            default: throw new IllegalArgumentException("Rol inválido");
+            case "PACIENTE":
+                return Rol.PACIENTE;
+            case "MEDICO_TERAPISTA":
+                return Rol.MEDICO_TERAPISTA;
+            case "AGENDADOR":
+                return Rol.AGENDADOR;
+            case "ADMINISTRADOR":
+                return Rol.ADMINISTRADOR;
+            default:
+                throw new IllegalArgumentException("Rol inválido");
         }
     }
+    
+    private void limpiarFormulario() {
+        txtPrimerNombre.setText("");
+        txtSegundoNombre.setText("");
+        txtPrimerApellido.setText("");
+        txtSegundoApellido.setText("");
+        txtTelefono.setText("");
+        txtDni.setText("");
+        txtUsername.setText("");
+        txtPassword.setText("");
+    }
 }
+

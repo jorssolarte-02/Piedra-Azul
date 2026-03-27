@@ -1,5 +1,10 @@
 package com.mycompany.piedrazul.ui;
 
+
+import static com.mycompany.piedrazul.domain.model.Rol.ADMINISTRADOR;
+import static com.mycompany.piedrazul.domain.model.Rol.AGENDADOR;
+import static com.mycompany.piedrazul.domain.model.Rol.MEDICO_TERAPISTA;
+import static com.mycompany.piedrazul.domain.model.Rol.PACIENTE;
 import com.mycompany.piedrazul.domain.model.Usuario;
 import com.mycompany.piedrazul.domain.service.UsuarioService;
 import com.mycompany.piedrazul.ui.panel.*;
@@ -10,7 +15,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-//clase menu
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 public class MenuPrincipalFrame extends JFrame {
 
     private Usuario usuario;
@@ -43,7 +49,7 @@ public class MenuPrincipalFrame extends JFrame {
 
         mainPanel.add(lblHeader, BorderLayout.NORTH);
 
-        // Panel dinámico por rol
+        // Panel dinámico por rol (ahora pasamos el usuario)
         mainPanel.add(obtenerPanelPorRol(), BorderLayout.CENTER);
 
         // Botón cerrar sesión
@@ -64,7 +70,7 @@ public class MenuPrincipalFrame extends JFrame {
 
     private JPanel obtenerPanelPorRol() {
         return switch (usuario.getRol()) {
-            case ADMINISTRADOR -> new AdminPanel(usuario); // 🔥 SOLO ESTO SE CORRIGIÓ
+            case ADMINISTRADOR -> new AdminPanel();
             case MEDICO_TERAPISTA -> new MedicoPanel(usuario);
             case PACIENTE -> new PacientePanel(usuario);
             case AGENDADOR -> new AgendadorPanel(usuario);

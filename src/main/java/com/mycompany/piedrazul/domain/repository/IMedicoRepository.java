@@ -8,6 +8,16 @@ package com.mycompany.piedrazul.domain.repository;
  *
  * @author asus
  */
+import java.util.List;
+
+import com.mycompany.piedrazul.domain.model.Medico;
+
+/**
+ *
+ * @author asus
+ */
 public interface IMedicoRepository {
     boolean create(int personaId, String tipoProfesional);
+    public Medico findById(int id);
+    public List<Medico> findAll();
 }

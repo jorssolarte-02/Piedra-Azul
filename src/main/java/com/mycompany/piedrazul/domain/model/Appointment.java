@@ -4,15 +4,20 @@ import java.time.LocalDateTime;
 
 public class Appointment {
     private int id;
-    private Usuario patient;         // Debe representar el paciente seleccionado
-    private Usuario professional;    // Debe representar el medico/terapista seleccionado
-    private Usuario createdBy;       // Usuario logueado que crea la cita
-    private LocalDateTime dateTime;
-    private AppointmentStatus status;
-    private String notes;
 
-    public Appointment() {
-    }
+    private Paciente paciente;     
+    private Medico medico;         
+    private Usuario creadoPor;     // quién agenda
+
+    private LocalDateTime fechaHora;
+    private AppointmentStatus estado;
+    private String observacion;
+
+    private LocalDateTime creadoEn;
+
+    public Appointment() {}
+    
+    // Getters y Setters
 
     public int getId() {
         return id;
@@ -22,64 +27,76 @@ public class Appointment {
         this.id = id;
     }
 
-    public Usuario getPatient() {
-        return patient;
+    public Paciente getPaciente() {
+        return paciente;
     }
 
-    public void setPatient(Usuario patient) {
-        this.patient = patient;
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
 
-    public Usuario getProfessional() {
-        return professional;
+    public Medico getMedico() {
+        return medico;
     }
 
-    public void setProfessional(Usuario professional) {
-        this.professional = professional;
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 
-    public Usuario getCreatedBy() {
-        return createdBy;
+    public Usuario getCreadoPor() {
+        return creadoPor;
     }
 
-    public void setCreatedBy(Usuario createdBy) {
-        this.createdBy = createdBy;
+    public void setCreadoPor(Usuario creadoPor) {
+        this.creadoPor = creadoPor;
     }
 
-    public LocalDateTime getDateTime() {
-        return dateTime;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setFechaHora(LocalDateTime fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
-    public AppointmentStatus getStatus() {
-        return status;
+    public AppointmentStatus getEstado() {
+        return estado;
     }
 
-    public void setStatus(AppointmentStatus status) {
-        this.status = status;
+    public void setEstado(AppointmentStatus estado) {
+        this.estado = estado;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getObservacion() {
+        return observacion;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
     }
 
+    public LocalDateTime getCreadoEn() {
+        return creadoEn;
+    }
+
+    public void setCreadoEn(LocalDateTime creadoEn) {
+        this.creadoEn = creadoEn;
+    }
+    
+    /*public Appointment getOriginalAppointment() { return originalAppointment; }
+    public void setOriginalAppointment(Appointment originalAppointment) { 
+        this.originalAppointment = originalAppointment; 
+    }*/
+    
     @Override
     public String toString() {
         return "Appointment{" +
                 "id=" + id +
-                ", patient=" + (patient != null ? patient.toString() : "null") +
-                ", professional=" + (professional != null ? professional.toString() : "null") +
-                ", createdBy=" + (createdBy != null ? createdBy.toString() : "null") +
-                ", dateTime=" + dateTime +
-                ", status=" + status +
-                ", notes='" + notes + '\'' +
+                ", paciente=" + (paciente != null ? paciente.getPrimerNombre() + paciente.getPrimerApellido() : "null") +
+                ", medico=" + (medico != null ? medico.getPrimerNombre() + medico.getPrimerApellido() : "null") +
+                ", fechaHora=" + fechaHora +
+                ", estado=" + estado +
+                ", oservacion='" + observacion + '\'' +
                 '}';
     }
 }

@@ -15,4 +15,3 @@ public interface IUsuarioRepository {
     void resetearIntentosFallidos(String username);
     Usuario findById(int id);
 }
-

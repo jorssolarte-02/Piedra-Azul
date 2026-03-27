@@ -1,12 +1,13 @@
 package com.mycompany.piedrazul.ui.panel;
 
 import com.mycompany.piedrazul.domain.model.Usuario;
-
+// import com.mycompany.piedrazul.ui.appointments.AppointmentListPanel;
+// import com.mycompany.piedrazul.ui.appointments.ManualAppointmentDialog;
 import javax.swing.*;
 import java.awt.*;
-//clase medico 
-public class MedicoPanel extends JPanel {
 
+public class MedicoPanel extends JPanel {
+    
     private Usuario usuarioActual;
 
     public MedicoPanel(Usuario usuarioActual) {
@@ -17,106 +18,58 @@ public class MedicoPanel extends JPanel {
     private void initComponents() {
 
         setLayout(new BorderLayout());
-        setBackground(new Color(240, 240, 240));
+        setBackground(Color.WHITE);
 
-        // ================= HEADER =================
-        JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(new Color(0, 150, 136));
-        header.setPreferredSize(new Dimension(100, 50));
+        JPanel gridPanel = new JPanel(new GridLayout(2, 2, 20, 20));
+        gridPanel.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
+        gridPanel.setBackground(Color.WHITE);
 
-        JLabel title = new JLabel("ACM – PIEDRA AZUL");
-        title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        title.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
+        JButton btnAgendar = crearBoton("AGENDAR CITA");
+        JButton btnCitasAgendadas = crearBoton("MIS CITAS");
+        JButton btnPacientesAtendidos = crearBoton("PACIENTES ATENDIDOS");
+        JButton btnHistorial = crearBoton("HISTORIAL");
 
-        header.add(title, BorderLayout.WEST);
+        // Acciones
+        // btnAgendar.addActionListener(e -> {
+        //     ManualAppointmentDialog dialog = new ManualAppointmentDialog(
+        //         (JFrame) SwingUtilities.getWindowAncestor(this), 
+        //         usuarioActual
+        //     );
+        //     dialog.setVisible(true);
+        // });
 
-        // ================= CONTENEDOR GENERAL =================
-        JPanel contenedor = new JPanel();
-        contenedor.setLayout(new BoxLayout(contenedor, BoxLayout.Y_AXIS));
-        contenedor.setBackground(new Color(240, 240, 240));
+        // btnCitasAgendadas.addActionListener(e -> {
+        //     AppointmentListPanel listPanel = new AppointmentListPanel(usuarioActual, false);
+        //     JOptionPane.showMessageDialog(this, listPanel, "Mis Citas", JOptionPane.PLAIN_MESSAGE);
+        // });
 
-        // 🔹 TÍTULO GRANDE CENTRADO
-        JLabel lblTitulo = new JLabel("Medico");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 50));
-        lblTitulo.setForeground(new Color(0, 150, 136));
-        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // btnHistorial.addActionListener(e -> {
+        //     AppointmentListPanel listPanel = new AppointmentListPanel(usuarioActual, true);
+        //     JOptionPane.showMessageDialog(this, listPanel, "Historial de Citas", JOptionPane.PLAIN_MESSAGE);
+        // });
 
-        // ================= CENTRO =================
-        JPanel center = new JPanel(new GridBagLayout());
-        center.setBackground(new Color(240, 240, 240));
-
-        JPanel card = new JPanel();
-        card.setLayout(new GridLayout(2, 2, 25, 25));
-        card.setPreferredSize(new Dimension(520, 320)); // 🔥 más grande
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-
-        // ================= BOTONES =================
-        JButton btnAgendar = crearBoton("Agendar cita");
-        JButton btnMisCitas = crearBoton("Mis citas");
-        JButton btnPacientes = crearBoton("Pacientes atendidos");
-        JButton btnHistorial = crearBoton("Historial");
-
-        // ================= ACCIONES =================
-
-        /*
-        btnAgendar.addActionListener(e -> {
-            ManualAppointmentDialog dialog = new ManualAppointmentDialog(
-                (JFrame) SwingUtilities.getWindowAncestor(this),
-                usuarioActual
-            );
-            dialog.setVisible(true);
+        btnPacientesAtendidos.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, 
+                "Funcionalidad en desarrollo", 
+                "Información", 
+                JOptionPane.INFORMATION_MESSAGE);
         });
 
-        btnMisCitas.addActionListener(e -> {
-            AppointmentListPanel listPanel = new AppointmentListPanel(usuarioActual, false);
-            JOptionPane.showMessageDialog(this, listPanel, "Mis Citas", JOptionPane.PLAIN_MESSAGE);
-        });
+        gridPanel.add(btnAgendar);
+        gridPanel.add(btnCitasAgendadas);
+        gridPanel.add(btnPacientesAtendidos);
+        gridPanel.add(btnHistorial);
 
-        btnHistorial.addActionListener(e -> {
-            AppointmentListPanel listPanel = new AppointmentListPanel(usuarioActual, true);
-            JOptionPane.showMessageDialog(this, listPanel, "Historial", JOptionPane.PLAIN_MESSAGE);
-        });
-        */
-
-        btnPacientes.addActionListener(e -> {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Funcionalidad en desarrollo",
-                    "Información",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        });
-
-        // ================= ADD BOTONES =================
-        card.add(btnAgendar);
-        card.add(btnMisCitas);
-        card.add(btnPacientes);
-        card.add(btnHistorial);
-
-        center.add(card);
-
-        // ================= ADD PRINCIPAL =================
-        contenedor.add(Box.createVerticalStrut(20));
-        contenedor.add(lblTitulo);
-        contenedor.add(Box.createVerticalStrut(20));
-        contenedor.add(center);
-
-        add(header, BorderLayout.NORTH);
-        add(contenedor, BorderLayout.CENTER);
+        add(gridPanel, BorderLayout.CENTER);
     }
 
     private JButton crearBoton(String texto) {
-        JButton boton = new JButton("<html><center>" + texto + "</center></html>");
-
+        JButton boton = new JButton(texto);
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(0, 150, 136)); // 🔥 azul del sistema
+        boton.setBackground(new Color(76, 175, 80));
         boton.setForeground(Color.WHITE);
-        boton.setFont(new Font("Segoe UI", Font.BOLD, 16)); // 🔥 más grande
-        boton.setPreferredSize(new Dimension(220, 80)); // 🔥 más grande
-        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setPreferredSize(new Dimension(200, 60));
         return boton;
     }
 }

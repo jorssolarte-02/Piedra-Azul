@@ -10,6 +10,7 @@ import com.mycompany.piedrazul.infrastructure.persistence.connection.ConnectionF
 
 import java.sql.*;
 import java.time.LocalDate;
+
 /**
  *
  * @author asus
@@ -19,11 +20,11 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
     @Override
     public Persona create(Persona persona) {
 
-        String sql = "INSERT INTO persona (per_primer_nombre, per_segundo_nombre, per_primer_apellido, per_segundo_apellido, per_genero, per_fecha_nac, per_telefono, per_dni) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO persona (per_primer_nombre, per_segundo_nombre, per_primer_apellido, per_segundo_apellido, per_genero, per_fecha_nac, per_telefono, per_dni, per_correo) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, persona.getPrimerNombre());
             stmt.setString(2, persona.getSegundoNombre());
@@ -33,6 +34,7 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
             stmt.setDate(6, Date.valueOf(persona.getFechaNacimiento()));
             stmt.setString(7, persona.getTelefono());
             stmt.setString(8, persona.getDni());
+            stmt.setString(9, persona.getCorreo());
 
             stmt.executeUpdate();
 
@@ -53,7 +55,7 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
         String sql = "SELECT * FROM persona WHERE per_id = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -82,7 +84,7 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
         String sql = "SELECT COUNT(*) FROM persona WHERE per_dni = ?";
 
         try (Connection conn = ConnectionFactory.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, dni);
             ResultSet rs = stmt.executeQuery();
@@ -96,5 +98,38 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
         }
 
         return false;
+    }
+
+    @Override
+    public Persona findByDni(String dni) {
+
+        String sql = "SELECT * FROM persona WHERE per_dni = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, dni);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Persona p = new Persona();
+                p.setId(rs.getInt("per_id"));
+                p.setPrimerNombre(rs.getString("per_primer_nombre"));
+                p.setSegundoNombre(rs.getString("per_segundo_nombre"));
+                p.setPrimerApellido(rs.getString("per_primer_apellido"));
+                p.setSegundoApellido(rs.getString("per_segundo_apellido"));
+                p.setGenero(rs.getString("per_genero"));
+                p.setTelefono(rs.getString("per_telefono"));
+                p.setCorreo(rs.getString("per_correo"));
+                p.setFechaNacimiento(rs.getDate("per_fecha_nac").toLocalDate());
+                p.setDni(rs.getString("per_dni"));
+                return p;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
     }
 }

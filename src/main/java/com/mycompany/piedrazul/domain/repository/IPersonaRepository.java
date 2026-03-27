@@ -15,4 +15,6 @@ public interface IPersonaRepository {
     Persona findById(int id);
 
     boolean dniExists(String dni);
+
+    public Persona findByDni(String dni);
 }
