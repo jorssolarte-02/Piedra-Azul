@@ -4,7 +4,7 @@ import com.mycompany.piedrazul.domain.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
-
+//clase admin
 public class AdminPanel extends JPanel {
 
     private Usuario usuario;

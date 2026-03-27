@@ -6,7 +6,7 @@ import com.mycompany.piedrazul.domain.service.UsuarioService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+//clase login
 public class LoginFrame extends JFrame {
 
     private UsuarioService usuarioService;

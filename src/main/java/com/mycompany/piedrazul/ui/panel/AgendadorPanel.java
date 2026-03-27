@@ -4,7 +4,7 @@ import com.mycompany.piedrazul.domain.model.Usuario;
 
 import javax.swing.*;
 import java.awt.*;
-
+//clase agendador 
 public class AgendadorPanel extends JPanel {
 
     private Usuario usuarioActual;

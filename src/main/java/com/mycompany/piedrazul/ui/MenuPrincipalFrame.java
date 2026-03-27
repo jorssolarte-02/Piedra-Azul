@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-
+//clase menu
 public class MenuPrincipalFrame extends JFrame {
 
     private Usuario usuario;

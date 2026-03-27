@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.LocalDate;
-
+//clase registro
 public class RegistroFrame extends JFrame {
 
     private final UsuarioService usuarioService;
