@@ -1,60 +1,78 @@
 package com.mycompany.piedrazul.ui.panel;
 
+import com.mycompany.piedrazul.domain.model.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AdminPanel extends JPanel {
 
-    public AdminPanel() {
+    private Usuario usuario;
+
+    public AdminPanel(Usuario usuario) {
+        this.usuario = usuario;
         initComponents();
+    }
+
+    public AdminPanel() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private void initComponents() {
 
         setLayout(new BorderLayout());
-        setBackground(Color.WHITE);
+        setBackground(new Color(240, 240, 240));
 
-        // 🔹 HEADER (barra superior)
+        // 🔹 HEADER
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(0, 150, 136));
-        header.setPreferredSize(new Dimension(100, 50));
+        header.setPreferredSize(new Dimension(100, 60));
 
         JLabel titulo = new JLabel("ACM – PIEDRA AZUL");
         titulo.setForeground(Color.WHITE);
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        titulo.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
-
-        JButton btnCerrar = new JButton("Cerrar sesión");
-        btnCerrar.setFocusPainted(false);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        titulo.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 
         header.add(titulo, BorderLayout.WEST);
-        header.add(btnCerrar, BorderLayout.EAST);
 
-        // 🔹 PANEL CENTRAL (contenedor general)
-        JPanel centro = new JPanel(new GridBagLayout());
-        centro.setBackground(Color.WHITE);
+        // 🔹 CONTENIDO CENTRAL
+        JPanel centro = new JPanel();
+        centro.setLayout(new BoxLayout(centro, BoxLayout.Y_AXIS));
+        centro.setBackground(new Color(240, 240, 240));
 
-        // 🔹 PANEL INTERNO (como el recuadro de la imagen)
-        JPanel panelAdmin = new JPanel(new GridLayout(2, 2, 15, 15));
-        panelAdmin.setBorder(BorderFactory.createTitledBorder("Panel Administrador"));
-        panelAdmin.setPreferredSize(new Dimension(300, 200));
+        // 🔹 TÍTULO (MÁS GRANDE)
+        JLabel lblPanel = new JLabel("Administrador");
+        lblPanel.setFont(new Font("Segoe UI", Font.BOLD, 45)); // aumentado
+        lblPanel.setForeground(new Color(0, 150, 136));
+        lblPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // 🔹 CONTENEDOR DE BOTONES (SUBIDO UN POCO)
+        JPanel panelContenedor = new JPanel(new GridBagLayout());
+        panelContenedor.setBackground(new Color(240, 240, 240));
+        panelContenedor.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); // 👈 sube todo
+
+        JPanel panelAdmin = new JPanel(new GridLayout(2, 2, 20, 20));
+        panelAdmin.setPreferredSize(new Dimension(420, 260));
         panelAdmin.setBackground(Color.WHITE);
+        panelAdmin.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 220, 220)),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
+        ));
 
-        // 🔹 BOTONES (adaptados a tu imagen)
-        JButton btnGestionUsuarios = crearBoton("Gestión de usuarios");
-        JButton btnAuditoria = crearBoton("Auditoría del sistema");
-        JButton btnConfig = crearBoton("Configuración");
-
-        panelAdmin.add(btnGestionUsuarios);
-        panelAdmin.add(btnAuditoria);
-        panelAdmin.add(btnConfig);
-
-        // Espacio vacío para cuadrar diseño
+        // 🔹 BOTONES
+        panelAdmin.add(crearBoton("Gestión de usuarios"));
+        panelAdmin.add(crearBoton("Auditoría del sistema"));
+        panelAdmin.add(crearBoton("Configuración"));
         panelAdmin.add(new JLabel());
 
-        centro.add(panelAdmin);
+        panelContenedor.add(panelAdmin);
 
-        // 🔹 AGREGAR TODO
+        // 🔹 ORDEN FINAL (menos espacio arriba)
+        centro.add(Box.createVerticalStrut(15));
+        centro.add(lblPanel);
+        centro.add(Box.createVerticalStrut(15)); // reducido para subir botones
+        centro.add(panelContenedor);
+
         add(header, BorderLayout.NORTH);
         add(centro, BorderLayout.CENTER);
     }
@@ -65,8 +83,8 @@ public class AdminPanel extends JPanel {
         boton.setFocusPainted(false);
         boton.setBackground(new Color(0, 150, 136));
         boton.setForeground(Color.WHITE);
-        boton.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        boton.setPreferredSize(new Dimension(130, 40));
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setPreferredSize(new Dimension(180, 60));
 
         return boton;
     }

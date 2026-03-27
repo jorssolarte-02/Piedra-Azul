@@ -31,15 +31,26 @@ public class MedicoPanel extends JPanel {
 
         header.add(title, BorderLayout.WEST);
 
+        // ================= CONTENEDOR GENERAL =================
+        JPanel contenedor = new JPanel();
+        contenedor.setLayout(new BoxLayout(contenedor, BoxLayout.Y_AXIS));
+        contenedor.setBackground(new Color(240, 240, 240));
+
+        // 🔹 TÍTULO GRANDE CENTRADO
+        JLabel lblTitulo = new JLabel("Medico");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 50));
+        lblTitulo.setForeground(new Color(0, 150, 136));
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         // ================= CENTRO =================
         JPanel center = new JPanel(new GridBagLayout());
         center.setBackground(new Color(240, 240, 240));
 
         JPanel card = new JPanel();
-        card.setLayout(new GridLayout(2, 2, 20, 20));
-        card.setPreferredSize(new Dimension(380, 240));
+        card.setLayout(new GridLayout(2, 2, 25, 25));
+        card.setPreferredSize(new Dimension(520, 320)); // 🔥 más grande
         card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createEmptyBorder(25, 25, 25, 25));
+        card.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         // ================= BOTONES =================
         JButton btnAgendar = crearBoton("Agendar cita");
@@ -87,18 +98,23 @@ public class MedicoPanel extends JPanel {
         center.add(card);
 
         // ================= ADD PRINCIPAL =================
+        contenedor.add(Box.createVerticalStrut(20));
+        contenedor.add(lblTitulo);
+        contenedor.add(Box.createVerticalStrut(20));
+        contenedor.add(center);
+
         add(header, BorderLayout.NORTH);
-        add(center, BorderLayout.CENTER);
+        add(contenedor, BorderLayout.CENTER);
     }
 
     private JButton crearBoton(String texto) {
-        JButton boton = new JButton(texto);
+        JButton boton = new JButton("<html><center>" + texto + "</center></html>");
 
         boton.setFocusPainted(false);
-        boton.setBackground(new Color(76, 175, 80)); // verde médico
+        boton.setBackground(new Color(0, 150, 136)); // 🔥 azul del sistema
         boton.setForeground(Color.WHITE);
-        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        boton.setPreferredSize(new Dimension(150, 55));
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 16)); // 🔥 más grande
+        boton.setPreferredSize(new Dimension(220, 80)); // 🔥 más grande
         boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         return boton;

@@ -43,7 +43,7 @@ public class MenuPrincipalFrame extends JFrame {
 
         mainPanel.add(lblHeader, BorderLayout.NORTH);
 
-        // Panel dinámico por rol (ahora pasamos el usuario)
+        // Panel dinámico por rol
         mainPanel.add(obtenerPanelPorRol(), BorderLayout.CENTER);
 
         // Botón cerrar sesión
@@ -64,7 +64,7 @@ public class MenuPrincipalFrame extends JFrame {
 
     private JPanel obtenerPanelPorRol() {
         return switch (usuario.getRol()) {
-            case ADMINISTRADOR -> new AdminPanel();
+            case ADMINISTRADOR -> new AdminPanel(usuario); // 🔥 SOLO ESTO SE CORRIGIÓ
             case MEDICO_TERAPISTA -> new MedicoPanel(usuario);
             case PACIENTE -> new PacientePanel(usuario);
             case AGENDADOR -> new AgendadorPanel(usuario);

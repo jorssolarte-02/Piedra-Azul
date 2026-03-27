@@ -18,9 +18,6 @@ public class LoginFrame extends JFrame {
     private JLabel lblUserError, lblPassError;
     private JLabel lblUserCheck, lblPassCheck;
 
-    private JPanel errorPanel;
-    private JLabel errorLabel;
-
     private boolean passwordVisible = false;
 
     public LoginFrame(UsuarioService usuarioService) {
@@ -31,132 +28,101 @@ public class LoginFrame extends JFrame {
     private void initComponents() {
 
         setTitle("ACM - Piedra Azul");
-        setSize(700, 520);
+        setSize(1000, 820);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         JPanel main = new JPanel(new BorderLayout());
         main.setBackground(new Color(240, 240, 240));
 
-        // HEADER
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(0, 150, 136));
-        header.setPreferredSize(new Dimension(100, 50));
+        header.setPreferredSize(new Dimension(100, 70));
 
         JLabel title = new JLabel("ACM – PIEDRA AZUL");
         title.setForeground(Color.WHITE);
-        title.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        title.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0));
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setBorder(BorderFactory.createEmptyBorder(0, 25, 0, 0));
 
         header.add(title, BorderLayout.WEST);
 
-        // CENTRO
         JPanel center = new JPanel(new GridBagLayout());
         center.setBackground(new Color(240, 240, 240));
 
         JPanel card = new JPanel();
-        card.setPreferredSize(new Dimension(360, 400));
+        card.setPreferredSize(new Dimension(650, 700));
+        card.setMinimumSize(new Dimension(600, 650));
         card.setBackground(Color.WHITE);
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+        card.setBorder(BorderFactory.createEmptyBorder(35, 50, 35, 50));
 
         JLabel lblTitulo = new JLabel("Iniciar sesión");
-        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
         lblTitulo.setForeground(new Color(0, 150, 136));
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblSub = new JLabel("Accede por medio de tu cuenta");
-        lblSub.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        lblSub.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblSub.setForeground(Color.GRAY);
         lblSub.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // ===== USUARIO =====
         JLabel lblUsuario = new JLabel("Usuario");
-        lblUsuario.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        lblUsuario.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
         txtUsername = new JTextField("tu usuario");
         txtUsername.setForeground(Color.GRAY);
-        txtUsername.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        txtUsername.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        txtUsername.setBackground(new Color(235,235,235));
+        txtUsername.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        lblUserError = new JLabel(" ");
-        lblUserError.setForeground(Color.RED);
-        lblUserError.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-
-        lblUserCheck = new JLabel(" ");
-        lblUserCheck.setForeground(new Color(0, 150, 0));
-
-        // ===== PASSWORD =====
         JLabel lblPassword = new JLabel("Contraseña");
-        lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
         JPanel passPanel = new JPanel(new BorderLayout());
-        passPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        passPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 
         txtPassword = new JPasswordField("tu contraseña");
         txtPassword.setForeground(Color.GRAY);
+        txtPassword.setBackground(new Color(235,235,235));
+        txtPassword.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        txtPassword.setEchoChar((char) 0); // 🔥 importante para placeholder
 
         btnMostrar = new JButton("👁");
-        btnMostrar.setFocusPainted(false);
+        btnMostrar.setPreferredSize(new Dimension(60,50));
 
         passPanel.add(txtPassword, BorderLayout.CENTER);
         passPanel.add(btnMostrar, BorderLayout.EAST);
 
-        lblPassError = new JLabel(" ");
-        lblPassError.setForeground(Color.RED);
-        lblPassError.setFont(new Font("Segoe UI", Font.PLAIN, 11));
-
-        lblPassCheck = new JLabel(" ");
-        lblPassCheck.setForeground(new Color(0, 150, 0));
-
-        // ERROR PANEL
-        errorPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        errorPanel.setBackground(new Color(255, 230, 230));
-        errorPanel.setBorder(BorderFactory.createLineBorder(Color.RED));
-        errorPanel.setVisible(false);
-
-        errorLabel = new JLabel();
-        errorLabel.setForeground(Color.RED);
-
-        errorPanel.add(new JLabel("❌"));
-        errorPanel.add(errorLabel);
-
-        // BOTONES
         btnLogin = new JButton("Iniciar sesión");
         btnLogin.setBackground(new Color(0, 150, 136));
         btnLogin.setForeground(Color.WHITE);
-        btnLogin.setFocusPainted(false);
-        btnLogin.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        btnLogin.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        btnLogin.setMaximumSize(new Dimension(Integer.MAX_VALUE, 55));
 
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.setBackground(Color.WHITE);
         btnRegistrar.setForeground(new Color(0, 150, 136));
         btnRegistrar.setBorder(BorderFactory.createLineBorder(new Color(0, 150, 136)));
-        btnRegistrar.setFocusPainted(false);
-        btnRegistrar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 35));
+        btnRegistrar.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        btnRegistrar.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
 
-        // ADD
         card.add(lblTitulo);
-        card.add(Box.createVerticalStrut(5));
+        card.add(Box.createVerticalStrut(10));
         card.add(lblSub);
-        card.add(Box.createVerticalStrut(20));
+        card.add(Box.createVerticalStrut(35));
 
         card.add(lblUsuario);
+        card.add(Box.createVerticalStrut(5));
         card.add(txtUsername);
-        card.add(lblUserError);
-        card.add(lblUserCheck);
-        card.add(Box.createVerticalStrut(10));
+        card.add(Box.createVerticalStrut(20));
 
         card.add(lblPassword);
+        card.add(Box.createVerticalStrut(5));
         card.add(passPanel);
-        card.add(lblPassError);
-        card.add(lblPassCheck);
-        card.add(Box.createVerticalStrut(10));
-
-        card.add(errorPanel);
-        card.add(Box.createVerticalStrut(15));
+        card.add(Box.createVerticalStrut(25));
 
         card.add(btnLogin);
-        card.add(Box.createVerticalStrut(10));
+        card.add(Box.createVerticalStrut(15));
         card.add(btnRegistrar);
 
         center.add(card);
@@ -170,7 +136,47 @@ public class LoginFrame extends JFrame {
         eventos();
     }
 
+    // 🔥 ERROR ESTILO MODERNO
+    private void mostrarError(String mensaje) {
+
+        JDialog dialog = new JDialog(this, "Error", true);
+        dialog.setSize(360, 170);
+        dialog.setLocationRelativeTo(this);
+        dialog.setLayout(new BorderLayout());
+
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(15,15,15,15));
+
+        JLabel icon = new JLabel("X", SwingConstants.CENTER);
+        icon.setOpaque(true);
+        icon.setBackground(Color.RED);
+        icon.setForeground(Color.WHITE);
+        icon.setPreferredSize(new Dimension(45,45));
+        icon.setFont(new Font("Segoe UI", Font.BOLD, 20));
+
+        JLabel text = new JLabel("<html>" + mensaje + "</html>");
+        text.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        JPanel center = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        center.add(icon);
+        center.add(text);
+
+        JButton ok = new JButton("OK");
+        ok.addActionListener(e -> dialog.dispose());
+
+        JPanel bottom = new JPanel();
+        bottom.add(ok);
+
+        panel.add(center, BorderLayout.CENTER);
+        panel.add(bottom, BorderLayout.SOUTH);
+
+        dialog.add(panel);
+        dialog.setVisible(true);
+    }
+
+    // 🔥 AQUÍ ESTÁ EL ARREGLO
     private void placeholder() {
+
         txtUsername.addFocusListener(new FocusAdapter() {
             public void focusGained(FocusEvent e) {
                 if (txtUsername.getText().equals("tu usuario")) {
@@ -192,6 +198,7 @@ public class LoginFrame extends JFrame {
                 if (String.valueOf(txtPassword.getPassword()).equals("tu contraseña")) {
                     txtPassword.setText("");
                     txtPassword.setForeground(Color.BLACK);
+                    txtPassword.setEchoChar('•'); // 🔥 OCULTA
                 }
             }
 
@@ -199,6 +206,7 @@ public class LoginFrame extends JFrame {
                 if (String.valueOf(txtPassword.getPassword()).isEmpty()) {
                     txtPassword.setText("tu contraseña");
                     txtPassword.setForeground(Color.GRAY);
+                    txtPassword.setEchoChar((char) 0); // 🔥 MUESTRA placeholder
                 }
             }
         });
@@ -206,85 +214,29 @@ public class LoginFrame extends JFrame {
 
     private void eventos() {
 
-        txtUsername.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                validarUsuario();
-            }
-        });
-
-        txtPassword.addKeyListener(new KeyAdapter() {
-            public void keyReleased(KeyEvent e) {
-                validarPassword();
-            }
-        });
-
         btnMostrar.addActionListener(e -> {
             passwordVisible = !passwordVisible;
             txtPassword.setEchoChar(passwordVisible ? (char) 0 : '•');
         });
 
         btnLogin.addActionListener(e -> login());
-        txtPassword.addActionListener(e -> login());
 
         btnRegistrar.addActionListener(e -> {
             new RegistroFrame(usuarioService).setVisible(true);
         });
     }
 
-    private boolean validarUsuario() {
-        String user = txtUsername.getText().trim();
-
-        if (user.isEmpty() || user.equals("tu usuario")) {
-            lblUserError.setText("Ingrese su usuario");
-            lblUserCheck.setText(" ");
-            return false;
-        }
-
-        lblUserError.setText(" ");
-        lblUserCheck.setText("✔");
-        return true;
-    }
-
-    private boolean validarPassword() {
-        String pass = new String(txtPassword.getPassword());
-
-        if (pass.isEmpty() || pass.equals("tu contraseña")) {
-            lblPassError.setText("Ingrese su contraseña");
-            lblPassCheck.setText(" ");
-            return false;
-        }
-
-        if (pass.length() < 6) {
-            lblPassError.setText("Mínimo 6 caracteres");
-            lblPassCheck.setText(" ");
-            return false;
-        }
-
-        lblPassError.setText(" ");
-        lblPassCheck.setText("✔");
-        return true;
-    }
-
-    private void mostrarError(String msg) {
-        errorLabel.setText(msg);
-        errorPanel.setVisible(true);
-    }
-
-    private void ocultarError() {
-        errorPanel.setVisible(false);
-    }
-
     private void login() {
-
-        ocultarError();
-
-        if (!validarUsuario() | !validarPassword()) {
-            mostrarError("Complete correctamente los campos");
-            return;
-        }
 
         String username = txtUsername.getText().trim();
         String password = new String(txtPassword.getPassword());
+
+        if (username.isEmpty() || username.equals("tu usuario") ||
+            password.isEmpty() || password.equals("tu contraseña")) {
+
+            mostrarError("Ingrese usuario y contraseña");
+            return;
+        }
 
         try {
             Usuario usuario = usuarioService.autenticar(username, password);
@@ -297,8 +249,8 @@ public class LoginFrame extends JFrame {
             new MenuPrincipalFrame(usuario, usuarioService).setVisible(true);
             this.dispose();
 
-        } catch (IllegalStateException ex) {
-            mostrarError(ex.getMessage());
+        } catch (Exception e) {
+            mostrarError(e.getMessage());
         }
     }
 }
